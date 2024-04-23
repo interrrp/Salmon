@@ -13,8 +13,14 @@ public class Engine
 
     public void Move()
     {
-        var moves = _board.Moves();
-        var move = moves[Random.Shared.Next(moves.Length)];
-        _board.Move(move);
+        var bestMove = _board.Moves()
+            .OrderBy(move =>
+                (move.IsMate ? 3 : 0)
+                + (move.IsCheck ? 2 : 0)
+                + (move.HasValue ? 1 : 0)
+            )
+            .First();
+
+        _board.Move(bestMove);
     }
 }
