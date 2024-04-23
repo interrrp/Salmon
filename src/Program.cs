@@ -1,10 +1,18 @@
 ﻿using Chess;
+using Salmon;
 
 var board = new ChessBoard();
+var engine = new Engine(board);
 var errored = false;
 
 while (!board.IsEndGame)
 {
+    if (board.Turn == PieceColor.Black)
+    {
+        engine.Move();
+        continue;
+    }
+
     Console.Clear();
 
     Console.ForegroundColor = ConsoleColor.DarkGray;
