@@ -5,9 +5,26 @@ var board = new ChessBoard();
 var engine = new Engine(board);
 var errored = false;
 
+Console.Clear();
+Console.WriteLine("The engine plays as...");
+Console.ForegroundColor = ConsoleColor.Magenta;
+Console.Write("↑ ");
+Console.ForegroundColor = ConsoleColor.White;
+Console.Write("Black    ");
+Console.ForegroundColor = ConsoleColor.Yellow;
+Console.Write("↓ ");
+Console.ForegroundColor = ConsoleColor.White;
+Console.Write("White");
+var engineColor = Console.ReadKey().Key switch
+{
+    ConsoleKey.UpArrow => PieceColor.Black,
+    ConsoleKey.DownArrow => PieceColor.White,
+    _ => PieceColor.Black,
+};
+
 while (!board.IsEndGame)
 {
-    if (board.Turn == PieceColor.Black)
+    if (board.Turn == engineColor)
     {
         engine.Move();
         continue;
