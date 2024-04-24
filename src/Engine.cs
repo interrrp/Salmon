@@ -2,33 +2,33 @@ using Chess;
 
 namespace Salmon;
 
-public class Engine(ChessBoard board, int depth = 2)
+public class Engine(ChessBoard board, bool isWhite = false, int depth = 3)
 {
     public void Move()
     {
-        var bestMove = GetBestMove(board, true);
+        var bestMove = GetBestMove();
         if (bestMove != null) board.Move(bestMove);
     }
 
-    private Move? GetBestMove(ChessBoard board, bool isMaximizingPlayer)
+    private Move? GetBestMove()
     {
         if (board.IsEndGame) return null;
 
         Move? bestMove = null;
-        var bestScore = isMaximizingPlayer ? int.MinValue : int.MaxValue;
+        var bestScore = isWhite ? int.MinValue : int.MaxValue;
 
         foreach (var move in board.Moves())
         {
             board.Move(move);
-            var score = Minimax(board, depth, !isMaximizingPlayer);
+            var score = Minimax(board, depth, !isWhite);
             board.Cancel();
 
-            if (isMaximizingPlayer && score > bestScore)
+            if (isWhite && score > bestScore)
             {
                 bestScore = score;
                 bestMove = move;
             }
-            else if (!isMaximizingPlayer && score < bestScore)
+            else if (!isWhite && score < bestScore)
             {
                 bestScore = score;
                 bestMove = move;
@@ -38,7 +38,7 @@ public class Engine(ChessBoard board, int depth = 2)
         return bestMove;
     }
 
-    private int Minimax(ChessBoard board, int depth, bool isMaximizingPlayer)
+    private int Minimax(ChessBoard board, int depth, bool isWhite)
     {
         if (depth == 0 || board.IsEndGame)
         {
@@ -46,17 +46,17 @@ public class Engine(ChessBoard board, int depth = 2)
             return board.Evaluate();
         }
 
-        var bestScore = isMaximizingPlayer ? int.MinValue : int.MaxValue;
+        var bestScore = isWhite ? int.MinValue : int.MaxValue;
 
         foreach (var move in board.Moves())
         {
             board.Move(move);
-            var score = Minimax(board, depth - 1, !isMaximizingPlayer);
+            var score = Minimax(board, depth - 1, !isWhite);
             board.Cancel();
 
-            if (isMaximizingPlayer && score > bestScore)
+            if (isWhite && score > bestScore)
                 bestScore = score;
-            else if (!isMaximizingPlayer && score < bestScore)
+            else if (!isWhite && score < bestScore)
                 bestScore = score;
         }
 
