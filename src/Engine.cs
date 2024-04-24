@@ -2,18 +2,11 @@ using Chess;
 
 namespace Salmon;
 
-public class Engine
+public class Engine(ChessBoard board)
 {
-    private ChessBoard _board { get; }
-
-    public Engine(ChessBoard board)
-    {
-        _board = board;
-    }
-
     public void Move()
     {
-        var bestMove = _board.Moves()
+        var bestMove = board.Moves()
             .OrderBy(move =>
                 (move.IsMate ? 3 : 0)
                 + (move.IsCheck ? 2 : 0)
@@ -21,6 +14,6 @@ public class Engine
             )
             .First();
 
-        _board.Move(bestMove);
+        board.Move(bestMove);
     }
 }
