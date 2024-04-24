@@ -9,11 +9,16 @@ public static class Evaluator
         int evaluation = 0;
         foreach (var piece in board)
         {
-            if (piece == null) continue;
-            int sign = piece.Color == PieceColor.White ? 1 : -1;
-            evaluation += GetPieceValue(piece.Type) * sign;
+            evaluation += EvaluatePiece(piece);
         }
         return evaluation;
+    }
+
+    private static int EvaluatePiece(Piece piece)
+    {
+        // 1 for white, -1 for black
+        int sign = piece.Color == PieceColor.White ? 1 : -1;
+        return GetPieceValue(piece.Type) * sign;
     }
 
     private static int GetPieceValue(PieceType type) => type.Name switch
