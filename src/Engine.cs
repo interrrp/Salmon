@@ -41,10 +41,7 @@ public class Engine(ChessBoard board, bool isWhite = false, int depth = 3)
     private int Minimax(ChessBoard board, int depth, bool isWhite)
     {
         if (depth == 0 || board.IsEndGame)
-        {
-            // Return the evaluation score if the maximum depth is reached or the game is over
             return board.Evaluate();
-        }
 
         var bestScore = isWhite ? int.MinValue : int.MaxValue;
 
