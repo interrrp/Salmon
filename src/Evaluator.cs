@@ -11,8 +11,18 @@ public static class Evaluator
         {
             if (piece == null) continue;
             int sign = piece.Color == PieceColor.White ? 1 : -1;
-            evaluation += piece.Type.Value * sign;
+            evaluation += GetPieceValue(piece.Type) * sign;
         }
         return evaluation;
     }
+
+    private static float GetPieceValue(PieceType type) => type.Name switch
+    {
+        "King" => 0,
+        "Pawn" => 1,
+        "Knight" or "Bishop" => 3,
+        "Rook" => 5,
+        "Queen" => 9,
+        _ => 0,
+    };
 }

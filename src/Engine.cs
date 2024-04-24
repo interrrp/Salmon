@@ -8,10 +8,12 @@ public class Engine(ChessBoard board)
     {
         var bestMove = board.Moves()
             .OrderBy(move =>
-                (move.IsMate ? 3 : 0)
-                + (move.IsCheck ? 2 : 0)
-                + (move.HasValue ? 1 : 0)
-            )
+            {
+                board.Move(move);
+                var eval = board.Evaluate();
+                board.Cancel();
+                return eval;
+            })
             .First();
 
         board.Move(bestMove);
