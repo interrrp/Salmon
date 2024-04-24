@@ -6,18 +6,20 @@ public static class Evaluator
 {
     public static int Evaluate(this ChessBoard board)
     {
-        int evaluation = 0;
+        if (board.IsEndGame)
+        {
+            var winner = board.EndGame?.WonSide;
+            if (winner == PieceColor.White)
+                return int.MaxValue;
+            else if (winner == PieceColor.Black)
+                return int.MinValue;
+        }
 
+        int evaluation = 0;
         foreach (var piece in board)
         {
             evaluation += EvaluatePiece(piece);
         }
-
-        if (board.BlackKingChecked)
-            evaluation += 10;
-        else if (board.WhiteKingChecked)
-            evaluation -= 10;
-
         return evaluation;
     }
 
