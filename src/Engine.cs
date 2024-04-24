@@ -40,7 +40,7 @@ public class Engine(ChessBoard board, bool isWhite = false, int depth = 2)
         return bestMove;
     }
 
-    private int Minimax(int depth, bool isWhite)
+    private int Minimax(int depth, bool isWhite, int alpha = int.MinValue, int beta = int.MaxValue)
     {
         if (depth == 0 || board.IsEndGame)
             return board.Evaluate();
@@ -50,13 +50,19 @@ public class Engine(ChessBoard board, bool isWhite = false, int depth = 2)
         foreach (var move in board.Moves())
         {
             board.Move(move);
-            int score = Minimax(depth - 1, !isWhite);
+            int score = Minimax(depth - 1, !isWhite, alpha, beta);
             board.Cancel();
 
-            if (isWhite && score > bestScore)
+            if ((isWhite && score > bestScore) || (!isWhite && score < bestScore))
                 bestScore = score;
-            else if (!isWhite && score < bestScore)
-                bestScore = score;
+
+            if (isWhite)
+                alpha = Math.Max(alpha, score);
+            else
+                beta = Math.Min(beta, score);
+
+            if (beta <= alpha)
+                break;
         }
 
         return bestScore;
