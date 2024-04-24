@@ -4,9 +4,9 @@ namespace Salmon;
 
 public static class Evaluator
 {
-    public static float Evaluate(this ChessBoard board)
+    public static int Evaluate(this ChessBoard board)
     {
-        float evaluation = 0;
+        int evaluation = 0;
         foreach (var piece in board)
         {
             if (piece == null) continue;
@@ -16,7 +16,7 @@ public static class Evaluator
         return evaluation;
     }
 
-    private static float GetPieceValue(PieceType type) => type.Name switch
+    private static int GetPieceValue(PieceType type) => type.Name switch
     {
         "King" => 0,
         "Pawn" => 1,
