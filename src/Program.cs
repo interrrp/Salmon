@@ -18,6 +18,11 @@ while (!board.IsEndGame)
     Console.ForegroundColor = ConsoleColor.DarkGray;
     Console.WriteLine(board.ToPgn() + "\n");
 
+    Console.ForegroundColor = ConsoleColor.Magenta;
+    Console.Write($"eval ");
+    Console.ForegroundColor = ConsoleColor.White;
+    Console.WriteLine(board.Evaluate() + "\n");
+
     Console.ForegroundColor = ConsoleColor.Gray;
     Console.WriteLine(board.ToAscii());
 
