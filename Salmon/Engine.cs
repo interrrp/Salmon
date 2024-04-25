@@ -3,27 +3,37 @@ using Chess;
 
 namespace Salmon;
 
-public class Engine(ChessBoard board, int depth = 3)
+public class Engine
 {
+    private readonly ChessBoard _board;
+    private readonly int _depth;
+
+    public Engine(ChessBoard board, int depth = 3)
+    {
+        ArgumentNullException.ThrowIfNull(board);
+        _board = board;
+        _depth = depth;
+    }
+
     public void Move() =>
-        board.Move(GetBestMove());
+        _board.Move(GetBestMove());
 
     private Move GetBestMove()
     {
-        Debug.Assert(!board.IsEndGame);
+        Debug.Assert(!_board.IsEndGame);
 
-        var color = board.Turn;
+        var color = _board.Turn;
 
         Move? bestMove = null;
         // Start with the worst score for the color, so the algorithm
         // knows when to minimize or maximize for the first move
         var bestScore = color.WorstScore();
 
-        foreach (var move in board.Moves())
+        foreach (var move in _board.Moves())
         {
-            board.Move(move);
-            var score = Minimax(depth, color.OppositeColor());
-            board.Cancel();
+            _board.Move(move);
+            var score = Minimax(_depth, color.OppositeColor());
+            _board.Cancel();
 
             if ((color == PieceColor.White && score > bestScore) || // Maximize score for white
                 (color == PieceColor.Black && score < bestScore)) // Minimize score for black
@@ -40,18 +50,18 @@ public class Engine(ChessBoard board, int depth = 3)
 
     private int Minimax(int depth, PieceColor color, int alpha = int.MinValue, int beta = int.MaxValue)
     {
-        if (depth == 0 || board.IsEndGame)
-            return board.Evaluate();
+        if (depth == 0 || _board.IsEndGame)
+            return _board.Evaluate();
 
         // Start with the worst score for the color, so the algorithm
         // knows when to minimize or maximize for the first move
         var bestScore = color.WorstScore();
 
-        foreach (var move in board.Moves())
+        foreach (var move in _board.Moves())
         {
-            board.Move(move);
+            _board.Move(move);
             var score = Minimax(depth - 1, color.OppositeColor(), alpha, beta);
-            board.Cancel();
+            _board.Cancel();
 
             if ((color == PieceColor.White && score > bestScore) || // Maximize score for white
                 (color == PieceColor.Black && score < bestScore)) // Minimize score for black
