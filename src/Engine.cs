@@ -17,6 +17,8 @@ public class Engine(ChessBoard board, bool isWhite = false, int depth = 2)
             return null;
 
         Move? bestMove = null;
+        // Start with the worst score for the color, so the algorithm
+        // knows when to minimize or maximize for the first move
         int bestScore = isWhite ? int.MinValue : int.MaxValue;
 
         foreach (var move in board.Moves())
@@ -25,12 +27,8 @@ public class Engine(ChessBoard board, bool isWhite = false, int depth = 2)
             int score = Minimax(depth, !isWhite);
             board.Cancel();
 
-            if (isWhite && score > bestScore)
-            {
-                bestScore = score;
-                bestMove = move;
-            }
-            else if (!isWhite && score < bestScore)
+            if ((isWhite && score > bestScore) || // Maximize score for white
+                (!isWhite && score < bestScore)) // Minimize score for black
             {
                 bestScore = score;
                 bestMove = move;
@@ -45,6 +43,8 @@ public class Engine(ChessBoard board, bool isWhite = false, int depth = 2)
         if (depth == 0 || board.IsEndGame)
             return board.Evaluate();
 
+        // Start with the worst score for the color, so the algorithm
+        // knows when to minimize or maximize for the first move
         int bestScore = isWhite ? int.MinValue : int.MaxValue;
 
         foreach (var move in board.Moves())
@@ -53,7 +53,8 @@ public class Engine(ChessBoard board, bool isWhite = false, int depth = 2)
             int score = Minimax(depth - 1, !isWhite, alpha, beta);
             board.Cancel();
 
-            if ((isWhite && score > bestScore) || (!isWhite && score < bestScore))
+            if ((isWhite && score > bestScore) || // Maximize score for white
+                (!isWhite && score < bestScore)) // Minimize score for black
                 bestScore = score;
 
             if (isWhite)
