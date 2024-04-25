@@ -1,20 +1,16 @@
+using System.Diagnostics;
 using Chess;
 
 namespace Salmon;
 
 public class Engine(ChessBoard board, int depth = 3)
 {
-    public void Move()
-    {
-        var bestMove = GetBestMove();
-        if (bestMove != null)
-            board.Move(bestMove);
-    }
+    public void Move() =>
+        board.Move(GetBestMove());
 
-    private Move? GetBestMove()
+    private Move GetBestMove()
     {
-        if (board.IsEndGame)
-            return null;
+        Debug.Assert(!board.IsEndGame);
 
         var color = board.Turn;
 
@@ -36,6 +32,8 @@ public class Engine(ChessBoard board, int depth = 3)
                 bestMove = move;
             }
         }
+
+        Debug.Assert(bestMove != null);
 
         return bestMove;
     }
