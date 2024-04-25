@@ -2,7 +2,7 @@ using Chess;
 
 namespace Salmon;
 
-public class Engine(ChessBoard board, bool isWhite = false, int depth = 2)
+public class Engine(ChessBoard board, bool isWhite = false, int depth = 3)
 {
     public void Move()
     {
