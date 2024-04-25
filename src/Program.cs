@@ -56,4 +56,3 @@ while (!board.IsEndGame)
         errored = true;
     }
 }
-
