@@ -29,10 +29,10 @@ public static class Evaluator
     {
         // 1 for white, -1 for black
         int sign = piece.Color == PieceColor.White ? 1 : -1;
-        return GetPieceValue(piece.Type) * sign;
+        return GetPieceMaterial(piece.Type) * sign;
     }
 
-    private static int GetPieceValue(PieceType type) => type.Name switch
+    private static int GetPieceMaterial(PieceType type) => type.Name switch
     {
         "King" => 0,
         "Pawn" => 1,
