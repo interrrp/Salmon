@@ -3,7 +3,7 @@ using Chess;
 
 namespace Salmon;
 
-public class Engine
+public sealed class Engine
 {
     private readonly ChessBoard _board;
     private readonly int _depth;
