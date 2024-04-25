@@ -8,13 +8,10 @@ public static class Evaluator
     {
         ArgumentNullException.ThrowIfNull(board);
 
-        if (board.IsEndGame)
+        if (board.EndGame != null)
         {
-            var winner = board.EndGame?.WonSide;
-            if (winner == PieceColor.White)
-                return int.MaxValue;
-            else if (winner == PieceColor.Black)
-                return int.MinValue;
+            // Game is finished, favor the winning side
+            return board.EndGame.WonSide.BestScore();
         }
 
         var evaluation = 0;
