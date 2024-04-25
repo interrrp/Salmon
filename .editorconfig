@@ -1,9 +1,14 @@
 root = true
 
 [*]
-indent_style = space
-indent_size = 4
 end_of_line = lf
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
+
+[*.cs]
+indent_style = space
+indent_size = 4
+# CA1303: Do not pass literals as localized parameters
+# This allows us to pass literals in Console.WriteLine
+dotnet_diagnostic.CA1303.severity = none

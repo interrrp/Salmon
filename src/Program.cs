@@ -36,7 +36,7 @@ while (!board.IsEndGame)
     Console.WriteLine(board.ToPgn() + "\n");
 
     Console.ForegroundColor = ConsoleColor.Magenta;
-    Console.Write($"eval ");
+    Console.Write("eval ");
     Console.ForegroundColor = ConsoleColor.White;
     Console.WriteLine(board.Evaluate() + "\n");
 
@@ -51,7 +51,7 @@ while (!board.IsEndGame)
         board.Move(Console.ReadLine()!);
         errored = false;
     }
-    catch (Exception)
+    catch (ChessException)
     {
         errored = true;
     }

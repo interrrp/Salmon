@@ -6,6 +6,8 @@ public static class Evaluator
 {
     public static int Evaluate(this ChessBoard board)
     {
+        ArgumentNullException.ThrowIfNull(board);
+
         if (board.IsEndGame)
         {
             var winner = board.EndGame?.WonSide;
