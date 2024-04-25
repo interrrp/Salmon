@@ -17,7 +17,7 @@ public static class Evaluator
                 return int.MinValue;
         }
 
-        int evaluation = 0;
+        var evaluation = 0;
         foreach (var piece in board)
         {
             evaluation += EvaluatePiece(piece);
@@ -28,7 +28,7 @@ public static class Evaluator
     private static int EvaluatePiece(Piece piece)
     {
         // 1 for white, -1 for black
-        int sign = piece.Color == PieceColor.White ? 1 : -1;
+        var sign = piece.Color == PieceColor.White ? 1 : -1;
         return GetPieceMaterial(piece.Type) * sign;
     }
 
