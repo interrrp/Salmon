@@ -37,14 +37,25 @@ public static class Uci
             {
                 var name = entry.Key;
                 var defaultVal = entry.Value;
-                var uciTypeName = Type.GetTypeCode(defaultVal.GetType()) switch
+
+                response.Append($"option name {name} ");
+
+                switch (defaultVal)
                 {
-                    TypeCode.Int32 => "spin",
-                    TypeCode.Boolean => "check",
-                    TypeCode.String => "string",
-                    _ => throw new NotImplementedException(),
-                };
-                response.AppendLineLf($"option name {name} type {uciTypeName} default {defaultVal}");
+                    case int:
+                        response.AppendLineLf($"type spin default {defaultVal}");
+                        break;
+                    case bool:
+                        // We have to make a special case for booleans since ToString on them
+                        // returns True/False and not true/false which is needed for UCI
+                        response.AppendLineLf($"type check default {defaultVal.ToString()!.ToLower()}");
+                        break;
+                    case string:
+                        response.AppendLineLf($"type string default {defaultVal}");
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
             }
             response.AppendLineLf("uciok");
         }

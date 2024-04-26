@@ -5,14 +5,42 @@ namespace Salmon.Tests;
 public class UciTest
 {
     [Fact]
-    public void Respond_Uci_ReturnsIdAndOk()
+    public void Respond_Uci_ReturnsUciOk()
     {
         var board = new ChessBoard();
         var engine = new Engine(board);
 
         var response = Uci.Respond(ref board, ref engine, "uci");
-        Assert.StartsWith("id", response);
         Assert.EndsWith("uciok\n", response);
+    }
+
+    [Fact]
+    public void Respond_Uci_ReturnsId()
+    {
+        var board = new ChessBoard();
+        var engine = new Engine(board);
+
+        var response = Uci.Respond(ref board, ref engine, "uci");
+        var lines = response.Split("\n");
+
+        Assert.Contains("id name", lines[0]);
+        Assert.Contains("id author", lines[1]);
+    }
+
+    [Fact]
+    public void Respond_Uci_ReturnsOptions()
+    {
+        var board = new ChessBoard();
+        var engine = new Engine(board);
+        engine.Options["Life"] = 42;
+        engine.Options["EnableFluxCapacitor"] = true;
+        engine.Options["Type"] = "Fish";
+
+        var response = Uci.Respond(ref board, ref engine, "uci");
+
+        Assert.Contains("option name Life type spin default 42", response);
+        Assert.Contains("option name EnableFluxCapacitor type check default true", response);
+        Assert.Contains("option name Type type string default Fish", response);
     }
 
     [Fact]
