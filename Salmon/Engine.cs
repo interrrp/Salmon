@@ -10,13 +10,15 @@ public sealed class Engine
 
     private readonly ChessBoard _board;
 
-    public int Depth { get; set; }
+    public Dictionary<string, object> Options { get; } = new()
+    {
+        ["Depth"] = 3,
+    };
 
-    public Engine(ChessBoard board, int depth = 3)
+    public Engine(ChessBoard board)
     {
         ArgumentNullException.ThrowIfNull(board);
         _board = board;
-        Depth = depth;
     }
 
     public Move Move()
@@ -47,7 +49,7 @@ public sealed class Engine
         foreach (var move in _board.Moves())
         {
             _board.Move(move);
-            var score = Minimax(Depth, color.OppositeColor());
+            var score = Minimax((int)Options["Depth"], color.OppositeColor());
             _board.Cancel();
 
             if ((color == PieceColor.White && score > bestScore) || // Maximize score for white

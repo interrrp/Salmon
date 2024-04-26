@@ -83,13 +83,13 @@ public class UciTest
     }
 
     [Fact]
-    public void Respond_SetDepth_SetsDepth()
+    public void Respond_SetOptionDepth_SetsDepth()
     {
         var board = new ChessBoard();
         var engine = new Engine(board);
 
         AssertUciResponse(ref board, ref engine, "setoption name Depth value 2");
-        Assert.Equal(2, engine.Depth);
+        Assert.Equivalent(2, engine.Options["Depth"]);
     }
 
     private void AssertUciResponse(

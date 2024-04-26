@@ -33,7 +33,19 @@ public static class Uci
         {
             response.AppendLineLf($"id name {Engine.Name}");
             response.AppendLineLf($"id author {Engine.Author}");
-            response.AppendLineLf("option name Depth type spin default 3 min 1 max 10");
+            foreach (var entry in engine.Options)
+            {
+                var name = entry.Key;
+                var defaultVal = entry.Value;
+                var uciTypeName = Type.GetTypeCode(defaultVal.GetType()) switch
+                {
+                    TypeCode.Int32 => "spin",
+                    TypeCode.Boolean => "check",
+                    TypeCode.String => "string",
+                    _ => throw new NotImplementedException(),
+                };
+                response.AppendLineLf($"option name {name} type {uciTypeName} default {defaultVal}");
+            }
             response.AppendLineLf("uciok");
         }
         else if (command == "isready")
@@ -44,12 +56,8 @@ public static class Uci
         {
             var name = parts[2];
             var value = parts[4];
-            switch (name.ToLower())
-            {
-                case "depth":
-                    engine.Depth = int.Parse(value);
-                    break;
-            }
+            if (engine.Options.ContainsKey(name))
+                engine.Options[name] = value;
         }
         else if (command.StartsWith("position") && parts.Length > 1)
         {
