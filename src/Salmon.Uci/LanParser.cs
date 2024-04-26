@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using Chess;
 
-namespace Salmon;
+namespace Salmon.Uci;
 
 public static class LanParser
 {

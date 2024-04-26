@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Salmon;
+namespace Salmon.Extensions;
 
 public static class StringBuilderExtensions
 {

@@ -1,6 +1,8 @@
 using Chess;
+using Salmon.Engine;
+using Salmon.Extensions;
 
-namespace Salmon.Tests;
+namespace Salmon.Tests.Engine;
 
 public class EvaluatorTest
 {

@@ -1,6 +1,6 @@
 using Chess;
 
-namespace Salmon;
+namespace Salmon.Extensions;
 
 public static class PieceColorExtensions
 {

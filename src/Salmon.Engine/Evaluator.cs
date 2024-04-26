@@ -1,6 +1,7 @@
 using Chess;
+using Salmon.Extensions;
 
-namespace Salmon;
+namespace Salmon.Engine;
 
 public static class Evaluator
 {

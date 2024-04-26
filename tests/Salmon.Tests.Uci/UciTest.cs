@@ -1,6 +1,8 @@
 using Chess;
+using Salmon.Engine;
+using Salmon.Uci;
 
-namespace Salmon.Tests;
+namespace Salmon.Tests.Uci;
 
 public class UciTest
 {
@@ -8,9 +10,9 @@ public class UciTest
     public void Respond_Uci_ReturnsUciOk()
     {
         var board = new ChessBoard();
-        var engine = new Engine(board);
+        var engine = new SalmonEngine(board);
 
-        var response = Uci.Respond(ref board, ref engine, "uci");
+        var response = UciInterface.Respond(ref board, ref engine, "uci");
         Assert.EndsWith("uciok\n", response);
     }
 
@@ -18,9 +20,9 @@ public class UciTest
     public void Respond_Uci_ReturnsId()
     {
         var board = new ChessBoard();
-        var engine = new Engine(board);
+        var engine = new SalmonEngine(board);
 
-        var response = Uci.Respond(ref board, ref engine, "uci");
+        var response = UciInterface.Respond(ref board, ref engine, "uci");
         var lines = response.Split("\n");
 
         Assert.Contains("id name", lines[0]);
@@ -31,12 +33,12 @@ public class UciTest
     public void Respond_Uci_ReturnsOptions()
     {
         var board = new ChessBoard();
-        var engine = new Engine(board);
+        var engine = new SalmonEngine(board);
         engine.Options["Life"] = 42;
         engine.Options["EnableFluxCapacitor"] = true;
         engine.Options["Type"] = "Fish";
 
-        var response = Uci.Respond(ref board, ref engine, "uci");
+        var response = UciInterface.Respond(ref board, ref engine, "uci");
 
         Assert.Contains($"option name Life type spin default 42 min {int.MinValue} max {int.MaxValue}", response);
         Assert.Contains("option name EnableFluxCapacitor type check default true", response);
@@ -47,7 +49,7 @@ public class UciTest
     public void Respond_IsReady_ReturnsReadyOk()
     {
         var board = new ChessBoard();
-        var engine = new Engine(board);
+        var engine = new SalmonEngine(board);
 
         AssertUciResponse(ref board, ref engine, "isready", "readyok");
     }
@@ -57,7 +59,7 @@ public class UciTest
     {
         var board = new ChessBoard();
         board.Move(board.Moves()[0]);
-        var engine = new Engine(board);
+        var engine = new SalmonEngine(board);
 
         AssertUciResponse(ref board, ref engine, "position startpos");
         Assert.Empty(board.ExecutedMoves);
@@ -67,7 +69,7 @@ public class UciTest
     public void Respond_PositionFen_LoadsFen()
     {
         var board = new ChessBoard();
-        var engine = new Engine(board);
+        var engine = new SalmonEngine(board);
 
         var fen = "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1";
         AssertUciResponse(ref board, ref engine, $"position {fen}");
@@ -78,7 +80,7 @@ public class UciTest
     public void Respond_PositionStartPosMoves_PlaysMoves()
     {
         var board = new ChessBoard();
-        var engine = new Engine(board);
+        var engine = new SalmonEngine(board);
 
         AssertUciResponse(ref board, ref engine, "position startpos moves e2e4 e7e5");
         Assert.Equal("1. e4 e5", board.ToPgn());
@@ -88,7 +90,7 @@ public class UciTest
     public void Respond_PositionFenMoves_PlaysMoves()
     {
         var board = new ChessBoard();
-        var engine = new Engine(board);
+        var engine = new SalmonEngine(board);
 
         // e4 e5
         var fen = "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1";
@@ -103,9 +105,9 @@ public class UciTest
     public void Respond_GoInfinite_PlaysMove()
     {
         var board = new ChessBoard();
-        var engine = new Engine(board);
+        var engine = new SalmonEngine(board);
 
-        var response = Uci.Respond(ref board, ref engine, "go infinite");
+        var response = UciInterface.Respond(ref board, ref engine, "go infinite");
         Assert.StartsWith("bestmove", response);
         Assert.Single(board.ExecutedMoves);
     }
@@ -114,7 +116,7 @@ public class UciTest
     public void Respond_SetOption_SetsCorrectType()
     {
         var board = new ChessBoard();
-        var engine = new Engine(board);
+        var engine = new SalmonEngine(board);
         engine.Options["Life"] = 43;
         engine.Options["EnableFluxCapacitor"] = false;
         engine.Options["Type"] = "Meat";
@@ -130,10 +132,10 @@ public class UciTest
     }
 
     private void AssertUciResponse(
-        ref ChessBoard board, ref Engine engine,
+        ref ChessBoard board, ref SalmonEngine engine,
         string command, params string[] expectedLines)
     {
-        var response = Uci.Respond(ref board, ref engine, command);
+        var response = UciInterface.Respond(ref board, ref engine, command);
 
         if (expectedLines.Length <= 0)
         {

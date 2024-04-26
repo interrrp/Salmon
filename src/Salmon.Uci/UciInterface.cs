@@ -1,11 +1,13 @@
 using System.Text;
 using Chess;
+using Salmon.Engine;
+using Salmon.Extensions;
 
-namespace Salmon;
+namespace Salmon.Uci;
 
-public static class Uci
+public static class UciInterface
 {
-    public static void Run(ref ChessBoard board, ref Engine engine)
+    public static void Run(ref ChessBoard board, ref SalmonEngine engine)
     {
         ArgumentNullException.ThrowIfNull(board);
 
@@ -19,7 +21,7 @@ public static class Uci
         }
     }
 
-    public static string Respond(ref ChessBoard board, ref Engine engine, string command)
+    public static string Respond(ref ChessBoard board, ref SalmonEngine engine, string command)
     {
         ArgumentNullException.ThrowIfNull(board);
         ArgumentNullException.ThrowIfNull(engine);
@@ -31,8 +33,8 @@ public static class Uci
 
         if (command == "uci")
         {
-            response.AppendLineLf($"id name {Engine.Name}");
-            response.AppendLineLf($"id author {Engine.Author}");
+            response.AppendLineLf($"id name {SalmonEngine.Name}");
+            response.AppendLineLf($"id author {SalmonEngine.Author}");
             foreach (var entry in engine.Options)
             {
                 var name = entry.Key;

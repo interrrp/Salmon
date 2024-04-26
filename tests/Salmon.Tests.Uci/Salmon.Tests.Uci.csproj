@@ -22,7 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Salmon\Salmon.csproj" />
+    <ProjectReference Include="..\..\src\Salmon.Uci\Salmon.Uci.csproj" />
+    <ProjectReference Include="..\..\src\Salmon.Engine\Salmon.Engine.csproj" />
   </ItemGroup>
 
 </Project>

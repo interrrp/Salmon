@@ -1,6 +1,7 @@
 using Chess;
+using Salmon.Uci;
 
-namespace Salmon.Tests;
+namespace Salmon.Tests.Uci;
 
 public class LanParserTest
 {

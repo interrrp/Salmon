@@ -1,9 +1,10 @@
 using System.Diagnostics;
 using Chess;
+using Salmon.Extensions;
 
-namespace Salmon;
+namespace Salmon.Engine;
 
-public sealed class Engine
+public sealed class SalmonEngine
 {
     public const string Name = "Salmon";
     public const string Author = "The Salmon team";
@@ -15,7 +16,7 @@ public sealed class Engine
         ["Depth"] = 3,
     };
 
-    public Engine(ChessBoard board)
+    public SalmonEngine(ChessBoard board)
     {
         ArgumentNullException.ThrowIfNull(board);
         _board = board;
