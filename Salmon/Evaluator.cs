@@ -15,10 +15,17 @@ public static class Evaluator
         }
 
         var evaluation = 0;
+
+        if (board.BlackKingChecked)
+            evaluation += 3;
+        else if (board.WhiteKingChecked)
+            evaluation -= 3;
+
         foreach (var piece in board)
         {
             evaluation += EvaluatePiece(piece);
         }
+
         return evaluation;
     }
 
