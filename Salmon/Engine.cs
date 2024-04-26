@@ -25,9 +25,16 @@ public sealed class Engine
         return move;
     }
 
-    private Move GetBestMove()
+    public Move GetBestMove()
     {
         Debug.Assert(!_board.IsEndGame);
+
+        if (_board.MoveIndex == -1)
+        {
+            // This is the first move, start controlling
+            // the center with e4
+            return _board.ParseFromSan("e4");
+        }
 
         var color = _board.Turn;
 
