@@ -21,7 +21,7 @@ public sealed class Engine
     public Move Move()
     {
         var move = GetBestMove();
-        _board.Move(GetBestMove());
+        _board.Move(move);
         return move;
     }
 
