@@ -66,9 +66,22 @@ public static class Uci
         else if (command.StartsWith("setoption") && parts.Length == 5)
         {
             var name = parts[2];
-            var value = parts[4];
-            if (engine.Options.ContainsKey(name))
-                engine.Options[name] = value;
+            var newValue = parts[4];
+            if (engine.Options.TryGetValue(name, out var oldValue))
+            {
+                switch (oldValue)
+                {
+                    case int:
+                        engine.Options[name] = int.Parse(newValue);
+                        break;
+                    case bool:
+                        engine.Options[name] = bool.Parse(newValue);
+                        break;
+                    default:
+                        engine.Options[name] = newValue;
+                        break;
+                }
+            }
         }
         else if (command.StartsWith("position") && parts.Length > 1)
         {

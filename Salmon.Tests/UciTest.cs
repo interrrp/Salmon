@@ -111,13 +111,22 @@ public class UciTest
     }
 
     [Fact]
-    public void Respond_SetOptionDepth_SetsDepth()
+    public void Respond_SetOption_SetsCorrectType()
     {
         var board = new ChessBoard();
         var engine = new Engine(board);
+        engine.Options["Life"] = 43;
+        engine.Options["EnableFluxCapacitor"] = false;
+        engine.Options["Type"] = "Meat";
 
-        AssertUciResponse(ref board, ref engine, "setoption name Depth value 2");
-        Assert.Equivalent(2, engine.Options["Depth"]);
+        AssertUciResponse(ref board, ref engine, "setoption name Life value 42");
+        Assert.Equal(42, engine.Options["Life"]);
+
+        AssertUciResponse(ref board, ref engine, "setoption name EnableFluxCapacitor value true");
+        Assert.Equal(true, engine.Options["EnableFluxCapacitor"]);
+
+        AssertUciResponse(ref board, ref engine, "setoption name Type value Fish");
+        Assert.Equal("Fish", engine.Options["Type"]);
     }
 
     private void AssertUciResponse(
