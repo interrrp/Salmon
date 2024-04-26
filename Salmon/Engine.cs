@@ -5,6 +5,9 @@ namespace Salmon;
 
 public sealed class Engine
 {
+    public const string Name = "Salmon";
+    public const string Author = "The Salmon team";
+
     private readonly ChessBoard _board;
     private readonly int _depth;
 
@@ -15,8 +18,12 @@ public sealed class Engine
         _depth = depth;
     }
 
-    public void Move() =>
+    public Move Move()
+    {
+        var move = GetBestMove();
         _board.Move(GetBestMove());
+        return move;
+    }
 
     private Move GetBestMove()
     {

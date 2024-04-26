@@ -12,3 +12,5 @@ indent_size = 4
 # CA1303: Do not pass literals as localized parameters
 # This allows us to pass literals in Console.WriteLine
 dotnet_diagnostic.CA1303.severity = none
+# CA1310: Specify StringComparison for correctness
+dotnet_diagnostic.CA1310.severity = none
