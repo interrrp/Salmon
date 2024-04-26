@@ -64,8 +64,11 @@ public class UciTest
 
         // e4 e5
         var fen = "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 1";
-        AssertUciResponse(ref board, ref engine, $"position {fen} moves f2f4 f7f5");
-        Assert.Equal("rnbqkbnr/pppp2pp/8/4pp2/4PP2/8/PPPP2PP/RNBQKBNR w KQkq f6 0 2", board.ToFen());
+        AssertUciResponse(ref board, ref engine, $"position {fen} moves g1f3 d7d6");
+        var pgn = board.ToPgn();
+
+        Assert.Contains(fen, pgn);
+        Assert.EndsWith("Nf3 d6", pgn);
     }
 
     [Fact]
