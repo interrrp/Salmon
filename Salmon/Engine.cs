@@ -9,13 +9,14 @@ public sealed class Engine
     public const string Author = "The Salmon team";
 
     private readonly ChessBoard _board;
-    private readonly int _depth;
+
+    public int Depth { get; set; }
 
     public Engine(ChessBoard board, int depth = 3)
     {
         ArgumentNullException.ThrowIfNull(board);
         _board = board;
-        _depth = depth;
+        Depth = depth;
     }
 
     public Move Move()
@@ -46,7 +47,7 @@ public sealed class Engine
         foreach (var move in _board.Moves())
         {
             _board.Move(move);
-            var score = Minimax(_depth, color.OppositeColor());
+            var score = Minimax(Depth, color.OppositeColor());
             _board.Cancel();
 
             if ((color == PieceColor.White && score > bestScore) || // Maximize score for white

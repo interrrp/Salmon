@@ -34,11 +34,23 @@ public static class Uci
         {
             response.AppendLineLf($"id name {Engine.Name}");
             response.AppendLineLf($"id author {Engine.Author}");
+            response.AppendLineLf("option name Depth type spin default 3 min 1 max 10");
             response.AppendLineLf("uciok");
         }
         else if (command == "isready")
         {
             response.AppendLineLf("readyok");
+        }
+        else if (command.StartsWith("setoption") && parts.Length == 5)
+        {
+            var name = parts[2];
+            var value = parts[4];
+            switch (name.ToLower())
+            {
+                case "depth":
+                    engine.Depth = int.Parse(value);
+                    break;
+            }
         }
         else if (command.StartsWith("position") && parts.Length > 1)
         {

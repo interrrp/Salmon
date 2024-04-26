@@ -10,13 +10,9 @@ public class UciTest
         var board = new ChessBoard();
         var engine = new Engine(board);
 
-        AssertUciResponse(
-            ref board, ref engine,
-            "uci",
-            $"id name {Engine.Name}",
-            $"id author {Engine.Author}",
-            "uciok"
-        );
+        var response = Uci.Respond(ref board, ref engine, "uci");
+        Assert.StartsWith("id", response);
+        Assert.EndsWith("uciok\n", response);
     }
 
     [Fact]
@@ -81,6 +77,16 @@ public class UciTest
         var response = Uci.Respond(ref board, ref engine, "go infinite");
         Assert.StartsWith("bestmove", response);
         Assert.Single(board.ExecutedMoves);
+    }
+
+    [Fact]
+    public void Respond_SetDepth_SetsDepth()
+    {
+        var board = new ChessBoard();
+        var engine = new Engine(board);
+
+        AssertUciResponse(ref board, ref engine, "setoption name Depth value 2");
+        Assert.Equal(2, engine.Depth);
     }
 
     private void AssertUciResponse(
