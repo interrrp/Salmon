@@ -43,7 +43,7 @@ public static class Uci
                 switch (defaultVal)
                 {
                     case int:
-                        response.AppendLineLf($"type spin default {defaultVal}");
+                        response.AppendLineLf($"type spin default {defaultVal} min {int.MinValue} max {int.MaxValue}");
                         break;
                     case bool:
                         // We have to make a special case for booleans since ToString on them

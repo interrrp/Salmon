@@ -38,7 +38,7 @@ public class UciTest
 
         var response = Uci.Respond(ref board, ref engine, "uci");
 
-        Assert.Contains("option name Life type spin default 42", response);
+        Assert.Contains($"option name Life type spin default 42 min {int.MinValue} max {int.MaxValue}", response);
         Assert.Contains("option name EnableFluxCapacitor type check default true", response);
         Assert.Contains("option name Type type string default Fish", response);
     }
