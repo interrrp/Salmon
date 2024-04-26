@@ -14,9 +14,4 @@
     <PackageReference Include="Gera.Chess" Version="1.1.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Salmon.Engine\Salmon.Engine.csproj" />
-    <ProjectReference Include="..\Salmon.Uci\Salmon.Uci.csproj" />
-  </ItemGroup>
-
 </Project>
